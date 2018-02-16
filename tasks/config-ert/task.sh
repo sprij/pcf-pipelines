@@ -272,18 +272,6 @@ cf_properties=$(
 
     +
 
-    if $routing_custom_ca_certificates == "" then
-      .
-    else
-      {
-        ".properties.routing_custom_ca_certificates": {
-          "value": $routing_custom_ca_certificates
-        }
-      }
-    end
-
-    +
-
     # TLS Cipher Suites
     {
       ".properties.gorouter_ssl_ciphers": {
