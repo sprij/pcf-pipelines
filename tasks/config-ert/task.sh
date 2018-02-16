@@ -43,7 +43,6 @@ fi
 
 CREDHUB_ENCRYPTION_KEYS_JSON="$(ruby -r yaml -r json -e 'puts JSON.dump(YAML.load(ENV["CREDHUB_ENCRYPTION_KEYS"]))')"
 
-
 cf_properties=$(
   jq -n \
     --arg tcp_routing "$TCP_ROUTING" \
@@ -175,16 +174,7 @@ cf_properties=$(
         "value": $mysql_static_ips
       }
     }
-    +
-    if $routing_custom_ca_certificates == "" then
-      .
-    else
-      {
-        ".properties.routing_custom_ca_certificates": {
-          "value": $routing_custom_ca_certificates
-        }
-      }
-    end
+
     +
 
     # Credhub encryption keys
@@ -278,6 +268,18 @@ cf_properties=$(
         "value": $routing_tls_termination
       }
     }
+
+    +
+
+    if $routing_custom_ca_certificates == "" then
+      .
+    else
+      {
+        ".properties.routing_custom_ca_certificates": {
+          "value": $routing_custom_ca_certificates
+        }
+      }
+    end
 
     +
 
@@ -465,8 +467,6 @@ cf_properties=$(
     '
 )
 
-echo $cf_properties
-
 cf_network=$(
   jq -n \
     --arg network_name "$NETWORK_NAME" \
@@ -643,8 +643,6 @@ cf_resources=$(
 
 om-linux \
   --target https://$OPSMAN_DOMAIN_OR_IP_ADDRESS \
-  --client-id "${OPSMAN_CLIENT_ID}" \
-  --client-secret "${OPSMAN_CLIENT_SECRET}" \
   --username "$OPS_MGR_USR" \
   --password "$OPS_MGR_PWD" \
   --skip-ssl-validation \
