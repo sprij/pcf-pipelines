@@ -45,6 +45,8 @@ fi
 
 CREDHUB_ENCRYPTION_KEYS_JSON="$(ruby -r yaml -r json -e 'puts JSON.dump(YAML.load(ENV["CREDHUB_ENCRYPTION_KEYS"]))')"
 
+echo $cf_properties
+
 cf_properties=$(
   jq -n \
     --arg tcp_routing "$TCP_ROUTING" \
@@ -468,6 +470,8 @@ cf_properties=$(
     end
     '
 )
+
+echo $cf_properties
 
 cf_network=$(
   jq -n \
